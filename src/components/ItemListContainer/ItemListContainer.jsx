@@ -7,7 +7,7 @@ const MySwal = withReactContent(Swal)
 export const ItemListContainer = () => {
   let timerInterval
   Swal.fire({
-    title: 'Bienvenido!',
+    title: 'Bienvenido a la Tienda Cosmet!',
     html: 'Me cerarré en <b></b> milisegundos.',
     timer: 2000,
     timerProgressBar: true,
@@ -23,6 +23,6 @@ export const ItemListContainer = () => {
     }
   })
   return (
-    <p></p>
+    <h1 id="itemListContainer">Tienda Cosmet</h1>
   )
 }
