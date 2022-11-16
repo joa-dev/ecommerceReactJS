@@ -1,28 +1,38 @@
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import "./ItemListContainer.css";
+import { data } from "../../data/data"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom";
+import Item from "../Item/Item";
+import ItemList from "../ItemList/ItemList"
 
-const MySwal = withReactContent(Swal)
+const ItemListContainer = () => {
+  const [items, setItems] = useState([]);
+  const { categoryName } = useParams();
 
-export const ItemListContainer = () => {
-  let timerInterval
-  Swal.fire({
-    title: 'Bienvenido a la Tienda Cosmet!',
-    html: 'Me cerarré en <b></b> milisegundos.',
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: () => {
-      Swal.showLoading()
-      const b = Swal.getHtmlContainer().querySelector('b')
-      timerInterval = setInterval(() => {
-        b.textContent = Swal.getTimerLeft()
-      }, 100)
-    },
-    willClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
+  const getProducts = new Promise ((resolve, reject) => {
+    setTimeout(()=> {
+      if (categoryName){
+        const filteredData = data.filter((item) => {
+          return item.category == categoryName;
+        });
+        resolve(filteredData);
+
+      } else {
+        resolve(data);
+      }
+    }, 1000);
+  });
+
+  useEffect(() => {
+    getProducts.then((res) => {
+      setItems(res);
+    })
+  }, [categoryName]);
+
   return (
-    <h1 id="itemListContainer">Tienda Cosmet</h1>
+    <div>
+      <ItemList products={items} />
+    </div>
   )
 }
+
+export default ItemListContainer;
